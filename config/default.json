@@ -7,12 +7,13 @@
     "max": 50
   },
   "authentication": {
-    "entity": "user",
-    "service": "users",
+    "entity": "artist",
+    "service": "artists",
     "secret": "Wb+XEyALM9sO6qXgrmzjI8UVXEg=",
     "authStrategies": [
       "jwt",
-      "local"
+      "artist",
+      "viewer"
     ],
     "jwtOptions": {
       "header": {
@@ -23,10 +24,14 @@
       "algorithm": "HS256",
       "expiresIn": "1d"
     },
-    "local": {
+    "artist": {
       "usernameField": "email",
       "passwordField": "password"
     },
+    "viewer": {
+      "usernameField": "email",
+      "passwordField": "password"
+    },    
     "oauth": {
       "redirect": "/",
       "google": {

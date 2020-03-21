@@ -5,18 +5,19 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const users = sequelizeClient.define('users', {
+  const artists = sequelizeClient.define('artists', {
   
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
       unique: true
     },
+
     password: {
       type: DataTypes.STRING,
       allowNull: false
     },
-  
   
     googleId: { type: Sequelize.STRING },
   
@@ -33,10 +34,11 @@ module.exports = function (app) {
   });
 
   // eslint-disable-next-line no-unused-vars
-  users.associate = function (models) {
+  artists.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    models.artists.hasMany(models.appointments);
   };
 
-  return users;
+  return artists;
 };
