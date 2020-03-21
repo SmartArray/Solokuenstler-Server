@@ -2,9 +2,10 @@ const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { NotAuthenticated } = require('@feathersjs/errors');
 
 module.exports = class SKAuthenticationStrategy extends LocalStrategy {
-  constructor(serviceName) {
+  constructor(serviceName, entity) {
     super();
     this.serviceName = serviceName;
+    this.entity = entity;
   }
 
   async findEntity(username, params) {
@@ -29,5 +30,24 @@ module.exports = class SKAuthenticationStrategy extends LocalStrategy {
     }
 
     return list[0];
+  }
+
+  async getEntity(result, params) {
+    const { serviceName } = this;
+    const entityService = this.app.service(serviceName);
+    const entityId = entityService.id;
+
+    if (!entityId || result[entityId] === undefined) {
+      throw new NotAuthenticated('Could not get local entity');
+    }
+
+    if (!params.provider) {
+      return result;
+    }
+
+    return entityService.get(result[entityId], {
+      ...params,
+      [serviceName]: result
+    });    
   }
 };

@@ -8,11 +8,10 @@ exports.Register = class Register {
   }
 
   async registerUser(model, email, password, additionalInfo) {
-    console.log(model, email)
     try {
       const user = await model.create({ email, password });
-      console.log(user);
       return user;
+      
     } catch(e) {
       const [error] = e.errors;
       switch (error.type) {

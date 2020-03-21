@@ -6,10 +6,30 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const appointments = sequelizeClient.define('appointments', {
-    text: {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+
+    title: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    },
+
+    description: {
+      type: DataTypes.TEXT,
+    },
+
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+
+    max_subscribers: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     hooks: {
       beforeCount(options) {
@@ -23,7 +43,7 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     models.appointments.hasMany(models.payments);    
-    
+    models.appointments.hasMany(models.viewers);
   };
 
   return appointments;

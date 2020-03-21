@@ -10,7 +10,7 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
-      unique: true
+      unique: true,
     },
 
     password: {
@@ -18,11 +18,11 @@ module.exports = function (app) {
       allowNull: false
     },
   
-    googleId: { type: Sequelize.STRING },
+    googleId: { type: DataTypes.STRING },
   
-    facebookId: { type: Sequelize.STRING },
+    facebookId: { type: DataTypes.STRING },
   
-    twitterId: { type: Sequelize.STRING },
+    twitterId: { type: DataTypes.STRING },
   }, {
     hooks: {
       beforeCount(options) {

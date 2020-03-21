@@ -7,8 +7,8 @@ module.exports = app => {
   const authentication = new AuthenticationService(app);
 
   authentication.register('jwt', new JWTStrategy());
-  authentication.register('artist', new SKAuthenticationStrategy('artists'));
-  authentication.register('viewer', new SKAuthenticationStrategy('viewers'));
+  authentication.register('artist', new SKAuthenticationStrategy('artists', 'artist'));
+  authentication.register('viewer', new SKAuthenticationStrategy('viewers', 'artist'));
 
   app.use('/authentication', authentication);
   app.configure(expressOauth());

@@ -7,7 +7,6 @@
     "max": 50
   },
   "authentication": {
-    "entity": "artist",
     "service": "artists",
     "secret": "Wb+XEyALM9sO6qXgrmzjI8UVXEg=",
     "authStrategies": [

@@ -27,6 +27,11 @@ module.exports = function (app) {
     // Sync to the database
     app.set('sequelizeSync', sequelize.sync());
 
+    // Drop tables
+    // app.get('sequelizeSync').then(() => {
+    //   return sequelize.drop()
+    // });
+
     return result;
   };
 };
