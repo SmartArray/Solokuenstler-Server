@@ -26,8 +26,8 @@ Getting up and running is as easy as 1, 2, 3.
 
 ## Start Docker Environment
 ```
-	docker-compose up -d
-	watchexec --restart --exts "js" --watch src "docker-compose restart app"
+docker-compose up -d
+watchexec --restart --exts "js" --watch src "docker-compose restart app"
 ``` 
 
 ## Testing

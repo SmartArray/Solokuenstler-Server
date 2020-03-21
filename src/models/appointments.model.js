@@ -26,9 +26,19 @@ module.exports = function (app) {
       allowNull: false,
     },
 
+    duration: {
+      type: DataTypes.INTEGER, // Duration in minutes
+      allowNull: false,
+    },
+
     max_subscribers: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      default: 0,
+    },
+
+    room: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   }, {
     hooks: {
@@ -44,6 +54,8 @@ module.exports = function (app) {
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     models.appointments.hasMany(models.payments);    
     models.appointments.hasMany(models.viewers);
+
+    // ToDo: hasMany(models.ratings)
   };
 
   return appointments;

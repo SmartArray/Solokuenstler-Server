@@ -1,15 +1,17 @@
 const { AuthenticationService, JWTStrategy } = require('@feathersjs/authentication');
+const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth } = require('@feathersjs/authentication-oauth');
 
-const SKAuthenticationStrategy = require('./strategies/SKAuthenticationStrategy');
-
 module.exports = app => {
-  const authentication = new AuthenticationService(app);
+  const viewerAuth = new AuthenticationService(app, 'viewerAuth');
+  viewerAuth.register('jwt', new JWTStrategy());
+  viewerAuth.register('local', new LocalStrategy());
+  app.use('/auth/viewer', viewerAuth);
 
-  authentication.register('jwt', new JWTStrategy());
-  authentication.register('artist', new SKAuthenticationStrategy('artists', 'artist'));
-  authentication.register('viewer', new SKAuthenticationStrategy('viewers', 'artist'));
+  const artistAuth = new AuthenticationService(app, 'artistAuth');
+  artistAuth.register('jwt', new JWTStrategy());
+  artistAuth.register('local', new LocalStrategy());
+  app.use('/auth/artist', artistAuth);
 
-  app.use('/authentication', authentication);
   app.configure(expressOauth());
 };

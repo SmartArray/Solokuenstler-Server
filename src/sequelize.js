@@ -26,10 +26,12 @@ module.exports = function (app) {
 
     // Sync to the database
     app.set('sequelizeSync', sequelize.sync());
+    // app.set('sequelizeSync', sequelize.sync({ force: process.env.NODE_ENV != 'production' }));
 
     // Drop tables
     // app.get('sequelizeSync').then(() => {
-    //   return sequelize.drop()
+    //   console.log("DROP");
+    //   return sequelize.drop();
     // });
 
     return result;

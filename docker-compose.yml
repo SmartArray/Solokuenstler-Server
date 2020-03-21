@@ -12,7 +12,11 @@ services:
   openvidu:
     image: openvidu/openvidu-server-kms
     environment:
-      openvidu.secret: supersecret
+      openvidu.publicurl: https://openvidu:4443
+      # Username: OPENVIDUAPP
+      openvidu.secret: "MY_SECRET"
+      spring.datasource.username: root
+      spring.datasource.password: password
     ports:
       - 4443:4443
 
@@ -23,6 +27,10 @@ services:
 
   app:
     build: .
+    environment:
+      NODE_ENV: "development"
+      OPENVIDU_USER: "OPENVIDUAPP"
+      OPENVIDU_PASS: "MY_SECRET"
     command: ["bash", "./wait-for-it.sh", "postgres:5432", "--", "yarn", "run", "start"]
     volumes:
       - .:/app

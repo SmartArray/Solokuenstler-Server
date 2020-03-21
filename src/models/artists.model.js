@@ -6,16 +6,16 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const artists = sequelizeClient.define('artists', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      primaryKey: true,
+    },
+
+    artist_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
     },
 
     password: {
@@ -28,13 +28,16 @@ module.exports = function (app) {
     facebookId: { type: DataTypes.STRING },
   
     twitterId: { type: DataTypes.STRING },
-  
   }, {
     hooks: {
       beforeCount(options) {
         options.raw = true;
       }
-    }
+    },
+
+    indexes: [
+      { unique: true, fields: ['email', 'artist_id'] },
+    ],
   });
 
   // eslint-disable-next-line no-unused-vars
@@ -42,6 +45,8 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     models.artists.hasMany(models.appointments);
+
+    // ToDo: hasMany(models.ratings)
   };
 
   return artists;

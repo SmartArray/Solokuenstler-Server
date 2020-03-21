@@ -1,4 +1,9 @@
 {
   "host": "solokuenstler-server-app.feathersjs.com",
-  "port": "PORT"
+  "port": "PORT",
+
+  "postgres": "POSTGRES_URI",
+  "openvidu": "OPENVIDU_URI",  
+  "openviduUsername": "OPENVIDU_USER",
+  "openviduPassword": "OPENVIDU_PASS"
 }

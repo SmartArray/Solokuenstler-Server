@@ -3,6 +3,7 @@ const appointments = require('./appointments/appointments.service.js');
 const payments = require('./payments/payments.service.js');
 const viewers = require('./viewers/viewers.service.js');
 const register = require('./register/register.service.js');
+const room = require('./room/room.service.js');
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
@@ -11,4 +12,5 @@ module.exports = function (app) {
   app.configure(payments);
   app.configure(viewers);
   app.configure(register);
+  app.configure(room);
 };

@@ -2,13 +2,13 @@ const { authenticateArtist, authenticateAny } = require('../../authenticationHel
 
 module.exports = {
   before: {
-    all: [ ],
-    find: [ authenticateAny('jwt') ],
+    all: [ authenticateAny('jwt') ],
+    find: [],
     get: [],
-    create: [ authenticateArtist('jwt') ],
-    update: [ authenticateArtist('jwt') ],
-    patch: [ authenticateArtist('jwt') ],
-    remove: [ authenticateArtist('jwt') ],
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {
