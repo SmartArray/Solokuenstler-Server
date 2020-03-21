@@ -1,0 +1,2 @@
+# Solokuenstler-Server
+Hackathon #WirVsVirus
