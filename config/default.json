@@ -97,7 +97,7 @@
     }
   },
   "postgres": "postgres://postgres:supersecret@postgres:5432/solokuenstler",
-  "openvidu": "https://localhost:4443",
+  "openvidu": "https://openvidu:4443",
   "openviduUsername": "OPENVIDUAPP",
   "openviduPassword": "MY_SECRET"
 }

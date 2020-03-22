@@ -14,13 +14,12 @@ services:
     volumes:
       - ./ssl/localhost_keystore.jks:/ssl.jks
     environment:
-      openvidu.publicurl: https://localhost:4443
       # Username: OPENVIDUAPP
+      openvidu.publicurl: https://localhost:4443
       openvidu.secret: "MY_SECRET"
-      spring.datasource.username: root
-      spring.datasource.password: password
       server.ssl.key-store: /ssl.jks
-      server.ssl.key-store-password: supersecret
+      server.ssl.key-store-password: "supersecret"
+      server.ssl.key-alias: "localhost"
     ports:
       - 4443:4443
 
@@ -35,6 +34,7 @@ services:
       NODE_ENV: "development"
       OPENVIDU_USER: "OPENVIDUAPP"
       OPENVIDU_PASS: "MY_SECRET"
+      #NODE_TLS_REJECT_UNAUTHORIZED: 0
     command: ["bash", "./wait-for-it.sh", "postgres:5432", "--", "yarn", "run", "start"]
     volumes:
       - .:/app
