@@ -32,6 +32,13 @@ class OpenVidu {
     });
   }
 
+  get(path) {
+    return this.axios.request({
+      url: path,
+      method: 'get',
+    });    
+  }
+
   async initSession() {
     console.log('Creating OpenVidu Session');
 
@@ -52,26 +59,49 @@ class OpenVidu {
     }
   }
 
+  async recreateSessionIfNotExists(sessionId) {
+    try {
+      const response = await this.get(`sessions/${sessionId}`).then((resp) => {
+        return resp.data;
+      });
+
+      return response.sessionId; 
+    } catch(e) {
+      if (e.response.status == 404) {
+        // Recreate session
+        console.log('Recreating OpenVidu Session');
+        const data = await this.initSession();
+        return data.id;
+      } else {
+        return null;
+      }
+    }    
+  }  
+
   async getAccessToken(sessionId, role, data) {
     console.log('Creating OpenVidu AccessToken for session', sessionId);
     if (!sessionId) return null;
 
-    const response = await this.post('tokens', {
-      session: sessionId,
-      role,
-      data,
-    }).then((resp) => {
-      return resp.data;
-    });
+    try {
+      const response = await this.post('tokens', {
+        session: sessionId,
+        role,
+        data,
+      }).then((resp) => {
+        return resp.data;
+      });
 
-    return {
-      token: response.token,
-      session: response.session,
-      role: response.role,
-      data: response.data,
-      id: response.id,
-      kurentoOptions: response.kurentoOptions,
-    };    
+      return {
+        token: response.token,
+        session: response.session,
+        role: response.role,
+        data: response.data,
+        id: response.id,
+        kurentoOptions: response.kurentoOptions,
+      };    
+    } catch(e) {
+      console.error(e);
+    }
   }
 }
 

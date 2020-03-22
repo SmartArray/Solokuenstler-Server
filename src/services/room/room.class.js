@@ -8,6 +8,8 @@ exports.Room = class Room {
   }
 
   async find (params) {
+    const OpenViduService = this.app.get('OpenViduService');
+
     if (params.viewer != null) {
       // Role: Viewer
       const AppointmentsModel = this.app.service('/appointments').Model;
@@ -24,9 +26,18 @@ exports.Room = class Room {
         throw new GeneralError('Room not available yet');
       }
 
+      // Create access token
+      const tokenId = `viewer|${params.viewer.email}`;
+      const accessToken = await OpenViduService.getAccessToken(roomId, 'SUBSCRIBER', tokenId);
+      if (!accessToken) return {
+        message: 'error',
+        description: 'Could not create access token',
+      };      
+
       // Return appointments
       return {
         roomId,
+        token: accessToken.token,
       };
 
     } else if (params.artist != null) {
@@ -34,28 +45,27 @@ exports.Room = class Room {
       // Get own active appointment's room
       const { artist_id } = params.artist;
       const appointment = await this.app.service('/appointments').getCurrentAppointment(artist_id);
-      const OpenViduService = this.app.get('OpenViduService');
 
       let roomId = appointment.room;
       if (!roomId) {
         // Create room if not created yet
         const openViduData = await OpenViduService.initSession();
-
-        console.log(openViduData)
-
         roomId = openViduData.id;
         appointment.room = roomId;
-        console.log(`Created new room ${roomId}`);
-        await appointment.save({ fields: ['room'] });
+      } else {
+        // Check if we need to recreate
+        roomId = await OpenViduService.recreateSessionIfNotExists(roomId);
+        if (!roomId) {
+          throw new GeneralError('Unable to recreate session');
+        }
       }
 
-      const tokenId = `artist:${artist_id}`;
-
-      // ToDo: Request api/sessions/{roomId}
-      // Check if tokenId already exists
-      // connections.content: [ { clientData } ]
+      // Update entry in database
+      appointment.room = roomId;
+      await appointment.save({ fields: ['room'] });
 
       // Create access token
+      const tokenId = `artist|${artist_id}`;
       const accessToken = await OpenViduService.getAccessToken(roomId, 'PUBLISHER', tokenId);
       if (!accessToken) return {
         message: 'error',
