@@ -1,7 +1,13 @@
 {
-  "host": "localhost",
+  "host": "0.0.0.0",
   "port": 3030,
-  "public": "../public/",
+  "ssl": {
+    "enabled": true,
+    "cert": "../ssl/localhost.crt",
+    "key": "../ssl/private.key",
+    "port": 443
+  },
+  "public": "../public/solokuenstler-browser/public",
   "paginate": {
     "default": 10,
     "max": 50
@@ -91,7 +97,7 @@
     }
   },
   "postgres": "postgres://postgres:supersecret@postgres:5432/solokuenstler",
-  "openvidu": "https://openvidu:4443",
+  "openvidu": "https://localhost:4443",
   "openviduUsername": "OPENVIDUAPP",
   "openviduPassword": "MY_SECRET"
 }

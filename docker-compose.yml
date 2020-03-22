@@ -11,12 +11,16 @@ services:
 
   openvidu:
     image: openvidu/openvidu-server-kms
+    volumes:
+      - ./ssl/localhost_keystore.jks:/ssl.jks
     environment:
-      openvidu.publicurl: https://openvidu:4443
+      openvidu.publicurl: https://localhost:4443
       # Username: OPENVIDUAPP
       openvidu.secret: "MY_SECRET"
       spring.datasource.username: root
       spring.datasource.password: password
+      server.ssl.key-store: /ssl.jks
+      server.ssl.key-store-password: supersecret
     ports:
       - 4443:4443
 
@@ -36,6 +40,7 @@ services:
       - .:/app
     ports:
       - 80:3030
+      - 443:443
     depends_on:
       - openvidu
       - postgres

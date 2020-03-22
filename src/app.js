@@ -9,7 +9,8 @@ const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
-
+const https = require('https');
+const fs = require('fs');
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -25,6 +26,7 @@ const app = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
+
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
 app.use(cors());
